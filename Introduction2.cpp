@@ -24,13 +24,31 @@ enum PROGRAM_OUTPUT
 	PO_INTEREST = 10
 };
 
+string AmortHeader[] =
+{
+	"Yr",
+	"Mn",
+	"CumMn",
+	"Payment",
+	"Principal",
+	"Balance",
+	"Interest"
+};
+
+void printAmortHeader() {
+	cout << setw(PO_YEAR) << AmortHeader[0] << setw(PO_YEAR) << AmortHeader[1] << 
+		setw(PO_LOANMONTH) << AmortHeader[2] << setw(PO_PAYMENT) << AmortHeader[3] << 
+		setw(PO_PRINCIPAL) << AmortHeader[4] << setw(PO_INTEREST) << AmortHeader[6] << 
+		setw(PO_BALANCE) << AmortHeader[5] << endl;
+};
+
 int main(int argc, char* argv[])
 {
-	cout << "argc: " << argc << endl;
-	for (int i = 0; i < argc; i++)
+	//cout << "argc: " << argc << endl;
+	/*for (int i = 0; i < argc; i++)
 	{
 		cout << "argv[" << i << "]: " << argv[i]<<endl;
-	};
+	};*/
 
 	double principal = 0.0;
 	double interest = 0.0;
@@ -70,20 +88,22 @@ int main(int argc, char* argv[])
 	double currInterest = 0.0;
 	double currBalance = 0.0;
 	int year = 1;
+	int switchYear=0;
 	int yearMonth = 1;
 	currBalance = principal;
 
 	long currLoanMonth = 1;
-	cout << setw(PO_YEAR) << "Year" << setw(PO_YEAR) << "YearMonth" << setw(PO_LOANMONTH) <<
-		"LoanMonth" << setw(PO_PAYMENT) << "Payment" << setw(PO_PRINCIPAL) << 
-		"Principal" << setw(PO_INTEREST) << "Interest"<<setw(PO_BALANCE) << 
-		"Balance"  << endl;
+
 
 	while (currLoanMonth <= monthsOfLoan)
 	{
+		if (switchYear != year) {
+			switchYear = year;
+			printAmortHeader();
+		}
 		currInterest = currBalance * monthlyInterest;
 		currPrincipal = payment - currInterest;
-		currBalance = currBalance - currPrincipal;
+		currBalance = abs(currBalance - currPrincipal);
 		gMonthAmortization amort;
 
 		amort.year = year;
@@ -110,5 +130,6 @@ int main(int argc, char* argv[])
 	cout << "Loan payments complete"<<endl;
 
 	return 0;
+
 
 }
